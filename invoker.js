@@ -16,7 +16,6 @@ const server = http.createServer(async (req, res) => {
         req.on('end', async () => {
             try {
                 const data = JSON.parse(body);
-                data.action = get_lambda_action(data.action)
                 console.log(`Sending message to target server: ${JSON.stringify(data)}`);
                 await postToTarget(data);
             } catch (error) {
@@ -29,20 +28,6 @@ const server = http.createServer(async (req, res) => {
         res.end('Method not allowed.');
     }
 });
-
-
-function get_lambda_action(action) {
-    // Supported actions.
-    const actions = {
-        "call_api_spec": "api_spec",
-        "call_model_builder": "model_builder",
-        "call_model_parser": "model_parser",
-        "call_main_app_info": "main_app_info",
-        "call_routes": "routes",
-    }
-
-    return actions[action]
-}
 
 function postToTarget(data) {
     const postData = JSON.stringify(data);
