@@ -11,12 +11,12 @@ const server = http.createServer(async (req, res) => {
 
         let body = '';
         req.on('data', chunk => {
-            body += chunk.toString();
+            body += chunk;
         });
         req.on('end', async () => {
             try {
                 const data = JSON.parse(body);
-                console.log(`Sending message to target server: ${JSON.stringify(data)}`);
+                console.log(`Sending message to target server: ${data}`);
                 await postToTarget(data);
             } catch (error) {
                 console.error(`Error making request to target server: ${error}`);
@@ -30,7 +30,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 function postToTarget(data) {
-    const postData = JSON.stringify(data);
+    const postData = data;
     const options = {
         method: 'POST',
         headers: {
